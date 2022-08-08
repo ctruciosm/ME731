@@ -752,16 +752,13 @@ class: inverse, right, middle
 
 ## Vetor de médias
 
-Seja a matriz de dados $$\textbf{x} = 
-  \left( {\begin{array}{cccc}
-    x_{11} & x_{12} & \cdots & x_{1p} \\
-    x_{21} & x_{22} & \cdots & x_{2p} \\
-    \vdots & \vdots & \ddots & \vdots \\
-    x_{n1} & x_{n2} & \cdots & x_{np} \\
-  \end{array} } \right),$$
 
-a média amostral da $i$-ésima variável é dada por $\bar{x}_i = \dfrac{1}{n}\displaystyle \sum_{k = 1}^nx_{ki}$ a média amostral da $i$-ésima variável e o vetor de médias amostrais é dado por
+Seja $\bar{x}_i = \dfrac{1}{n}\displaystyle \sum_{k = 1}^nx_{ki}$ a média amostral da $i$-ésima variável.
+
+
+O vetor de médias amostrais é dado por
 $$\bar{\textbf{x}} = (\bar{x}_1, \cdots, \bar{x}_p)' = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \textbf{x}_i = \dfrac{1}{n} \textbf{x}' \textbf{1},$$ em que $\textbf{1}$ é o vetor coluna de tamanho $n$ com todos os elementos iguais a 1.
+
 
 
 ---
