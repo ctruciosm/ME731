@@ -1,0 +1,850 @@
+---
+title: "Análisis Multivariado Aplicado"
+subtitle: "Introducción"
+session: "01"
+author: 'Prof. Carlos Trucíos <br><a href="http://ctruciosm.github.io"> <i class="fa fa-desktop fa-fw"></i>&nbsp; ctruciosm.github.io</a><br> <a href="mailto:ctrucios@unicamp.br"><i class="fa fa-paper-plane fa-fw"></i>&nbsp; ctrucios@unicamp.br</a><br>'
+institute: "Instituto de Matemática, Estatística e Computação Científica, </br> Universidade Estadual de Campinas"
+output:
+  xaringan::moon_reader:
+    css: "xaringan-themer.css"
+    lib_dir: libs
+    nature:
+      slideNumberFormat: "%current%"
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+      countIncrementalSlides: false
+    includes:
+      in_header: header.html
+---
+layout: true
+
+<a class="footer-link" href="http://ctruciosm.github.io">ctruciosm.github.io &mdash; Carlos Trucíos (IMECC/UNICAMP)</a>
+
+
+<style type="text/css">
+.remark-slide-content {
+    font-size: 26px;
+    padding: 1em 3.5em 1em 3.5em;
+}
+</style>
+
+
+---
+
+
+```{r xaringanExtra, echo=FALSE}
+xaringanExtra::use_xaringan_extra(c("tile_view", "tachyons", "scribble", "panelset", "freezeframe", "clipboard"))
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = FALSE
+)
+xaringanExtra::use_logo(
+  image_url = "imagens/unicamp.png",
+  width = "100px",
+  height = "150px")
+```
+
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_xaringan()
+#style_duo_accent(link_color = "#8A0808",
+#                 blockquote_left_border_color = "red")
+```
+
+
+<center>
+```{r, echo = FALSE, out.height=500, out.width= 500}
+library(memer)
+meme_get("ExpandingBrain") %>% meme_text_brain("Univariado", "Bivariado", "Multivariado", "Alta Dimensão")
+```
+</center>
+
+---
+
+<center>
+```{r, echo = FALSE, out.height=500, out.width= 500}
+library(memer)
+meme_get("HotlineDrake") %>% meme_text_drake("Análise Multivariada", "Machine Learning")
+```
+</center>
+
+---
+
+
+## Notación
+
+Sean $\textbf{x}_1, \cdots, \textbf{x}_n$  $n$ observaciones $p$- dimensionales, _i.e._ $$\textbf{x}_i = (x_{i1}, x_{i2}, \cdots, x_{ip})',$$
+
+en que estas observaciones son realizaciones del vector aleatorio $p$-dimensional $\textbf{X} \in \mathbb{R}^p$, con $$\textbf{X} = (X_1, X_2, \cdots, X_p)',$$ en que $X_1, X_2, \cdots, X_p$ son variables aleatorias.
+
+Durante este curso, asumiremos que $\mathbb{E}(\textbf{X}) = \mu$ e $\mathbb{V}(\textbf{X}) = \Sigma$ son finitos.
+
+---
+
+## Notación
+
+La matriz de datos será una matriz de dimensión $n \times p$ ( $n$ observaciones y $p$ variables) de la forma:
+
+$$\textbf{x} = 
+  \left( {\begin{array}{cccc}
+    x_{11} & x_{12} & \cdots & x_{1p} \\
+    x_{21} & x_{22} & \cdots & x_{2p} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    x_{n1} & x_{n2} & \cdots & x_{np} \\
+  \end{array} } \right) = \left( {\begin{array}{c}
+    \textbf{x}_1^{\prime} \\
+    \vdots \\
+    \textbf{x}_n^{\prime} \\
+  \end{array} } \right) = (\textbf{x}_1, \cdots, \textbf{x}_n)'.$$
+
+$x_{ij}$ es el valor de la $j$-ésima columna (variable) para la $i$-ésima linea (observación).
+
+> Generalmemte, esta es la forma como tenemos almacenados los datos.
+
+
+---
+
+## Definición
+
+
+> .blue[**Análisis Multivariado:** conjunto de técnicas utilizadas para analisar, entender y resumir datos de dimención] $p \geq 2$. 
+
+--
+
+
+- **Reducción de dimensión:** representar el _dataset_ con un número menor de _variables_, perdiendo la menor cantidad de información posible.
+- **Agrupamiento:** agrupar observaciones o variábles segun las caracteristicas que poseen.
+- **Dependencia entre variables:** Todas las variábles son independentes? o será que una (o más) variables dependen de otras?.
+- **Predicción:** predecir los valores de una o más variables con base en los valores observados de otras variables.
+- **Clasificación:** clasificar nuevas observaciones en grupos pre-definidos con base en los valores de otras observaciones
+- **Test de hipóteses:** formulado en función de los parámetros multivariados.
+
+
+
+
+---
+class: inverse, right, middle
+# Datasets
+---
+
+### Swiss Bank Notes
+
+6 características diferentes fueron medidas en 200 billetes antiguos de 100 francos suizos. El conjunto de datos puede ser descargado [aqui](https://raw.githubusercontent.com/ctruciosm/ctruciosm.github.io/master/datasets/swiss_bank_notes.csv).
+
+--
+
+.pull-left[
+
+- $X_1$: Tamanho (horizontal),
+- $X_2$: Altura del lado derecho,
+- $X_3$: Altura del lado izquierdo,
+- $X_4$: Distancia del cuadrado interno hasta el margen inferior.
+- $X_5$: Distancia del cuadrado interno hasta el margen superior.
+- $X_6$: Tamanho de la diagonal.
+- $Y:$ 1(falso) e 0(verdadero)
+]
+
+
+.pull-right[
+
+![pensativo](imagens/1000_swiss_francs.png)
+
+]
+
+
+---
+
+### Swiss Bank Notes
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(GGally)
+library(plotly)
+library(aplpack)
+library(misc3d)
+```
+
+--
+
+```{r, message=FALSE, warning=FALSE}
+swiss_notes <- read.csv("./datasets/swiss_bank_notes.csv") 
+head(swiss_notes)
+```
+
+---
+
+### Dataset: Swiss Bank Notes
+
+```{r}
+swiss_notes <-  swiss_notes %>% 
+  rename("comprimento" = "X1", 
+         "alt_esq" = "X2", 
+         "alt_dir" = "X3",
+         "borda_inf" = "X4", 
+         "borda_sup" = "X5", 
+         "diagonal" = "X6") %>% 
+  mutate(Y = recode(Y, "0" = "Original", "1" = "Falso")) %>% 
+  mutate(Y = factor(Y))
+glimpse(swiss_notes)
+```
+
+
+
+```{r, echo = FALSE, warning=FALSE, message = FALSE}
+car_data <- read.table("https://raw.githubusercontent.com/QuantLet/MVA/master/QID-1485-MVAboxcar/carc.txt") %>% 
+  rename("preco" = "V1", "mpg" = "V2", "R78" = "V3",
+         "R77" = "V4", "headroom" = "V5", "dfr" = "V6",
+         "porta_malas" = "V7", "peso" = "V8", "comprimento" = "V9",
+         "diametro_giro" = "V10", "deslocamento" = "V11", 
+         "marcha" = "V12", "procedencia" = "V13") %>% 
+  mutate(procedencia = recode(procedencia, 
+                              .missing = NULL,
+                              "1" = "US", 
+                              "2" = "Japao", 
+                              "3" = "Europa")) %>% 
+  mutate(procedencia = factor(procedencia))
+```
+
+
+
+---
+class: inverse, right, middle
+# Análisis Exploratoria de Datos Multivariados
+---
+
+## Análisis Exploratoria de Datos Multivariados
+
+.blue[Antes de intentar construir algun modelo, primero necesitamos realizar un Análisis Exploratorio de Datos (EDA).]
+
+--
+
+**Que podemos esperar del EDA?**
+
+--
+
+- Son algunas variables mas dispersas que otras?
+- Los datos indican la existencia de sub-grupos?
+- Tenemos outliers?
+- Normalidad?
+- Las variables están correlacionadas? Cuanto?
+- etc.
+
+
+---
+
+
+## Análisis Exploratoria de Datos Multivariados
+
+**Cuales estadísticas, tablas o gráficos serian interesantes?**
+
+--
+
+- Vector de médias
+- Matriz de covarianza/correlación
+- 2D/3D Scatterplots
+- Boxplot
+- Caras de Chernoff-Flury
+- Curvas de Andrews
+- Coordenadas Paralelas
+- Histogramas
+- Gráfico de densidad (Kernel)
+- etc,
+
+
+---
+class: inverse, right, middle
+# Análisis Exploratoria de Datos Multivariados Métodos Gráficos.
+---
+
+
+## EDA: Boxplot
+
+
+.panelset[
+.panel[.panel-name[Plot]
+
+```{r, echo = FALSE, fig.height = 5.5, fig.width= 15}
+swiss_notes_longer <- swiss_notes %>%
+  pivot_longer(cols = c("comprimento", "alt_esq", 
+                        "alt_dir", "borda_inf",
+                        "borda_sup", "diagonal"),
+               names_to = "variaveis", 
+               values_to = "valores") 
+swiss_notes_longer %>% ggplot() + 
+  geom_boxplot(aes(y = valores,  x = Y, fill = Y)) +
+  facet_wrap(.~ variaveis, scales = "free_y")
+```
+
+]
+
+.panel[.panel-name[R Code]
+
+```{r, eval = FALSE}
+swiss_notes_longer <- swiss_notes %>%
+  pivot_longer(cols = c("comprimento", 
+                        "alt_esq", 
+                        "alt_dir", 
+                        "borda_inf",
+                        "borda_sup", 
+                        "diagonal"),
+               names_to = "variaveis", 
+               values_to = "valores") 
+
+swiss_notes_longer %>% ggplot() + 
+  geom_boxplot(aes(y = valores,  x = Y, fill = Y)) +
+  facet_wrap(.~ variaveis, scales = "free_y")
+```
+
+]]
+
+
+---
+
+## EDA: Boxplot
+
+**Ventajas:**
+
+- Útil para ver locación (mediana),
+- Útil para ver asimetría (posición de la mediana en la caja), 
+- Útil para ver dispersión (tamaño de la caja) e
+- Útil para ver puntos discordantes.
+- **Bastante útil para comparar grupos.**
+
+--
+
+
+**Desventajas:**
+
+- Nos permite comparar apenas una única variable al mismo tiempo.
+- No nos permite vizualizar multimodalidad.
+- No nos permite vizualizar subgrupos (clusters).
+
+--
+
+> Algunas posibles alternativas son [violin plots](https://chartio.com/learn/charts/violin-plot-complete-guide/) ou [bean plots](https://www.jstatsoft.org/article/view/v028c01).
+
+
+
+---
+
+## EDA: Densidad por Kernel
+
+
+
+.panelset[
+.panel[.panel-name[Plot]
+
+```{r, echo = FALSE, fig.height = 5.5, fig.width= 15}
+swiss_notes_longer %>% ggplot() + geom_density(aes(x = valores,  color = Y)) +
+  facet_wrap(.~ variaveis, scales = "free")
+```
+
+]
+
+.panel[.panel-name[R Code]
+
+```{r, eval = FALSE}
+swiss_notes_longer %>% ggplot() + geom_density(aes(x = valores,  color = Y)) +
+  facet_wrap(.~ variaveis, scales = "free")
+```
+
+]
+
+.panel[.panel-name[Plot 2]
+
+```{r, echo = FALSE, fig.height = 5.5, fig.width= 15}
+swiss_notes_longer %>% ggplot() + geom_density(aes(x = valores)) +
+  facet_wrap(.~ variaveis, scales = "free")
+```
+]]
+
+
+---
+
+## EDA: Densidad por Kernel
+
+- Nos dan una idea de la distribución de los datos.
+- Permite observar asimetria, dispersión y posibles multimodalidades
+- Utiliza una función suavizada en lugar de apenas una "caja" (como en los histogramas).
+
+
+--
+
+La forma general del estimador Kernel esta dada por:
+
+$$\hat{f}_h (x) = \dfrac{1}{n\times h} \displaystyle \sum_{i = 1}^n K\Big(\dfrac{x-x_i}{h} \Big).$$ 
+
+--
+
+> Diferentes Kernels ( $K(\cdot)$ ) produciran diferentes formas de la densidad estimada. 
+
+Note que necesitamos de un valor para $h$.
+
+
+---
+
+## EDA: Densidad por Kernel
+
+
+Algunos de los Kernels más utilizados son:
+
+- Uniforme: $K(u) = \frac{1}{2}I(|u| \leq 1)$,
+- Triangular: $K(u) = (1 - |u|) I(|u| \leq 1)$
+- Epanechnikov: $K(u) = \frac{3}{4} (1 - u^2) I(|u| \leq 1)$,
+- Biweight: $K(u) = \frac{15}{16} (1 - u^2)^2 I(|u| \leq 1)$,
+- Gaussiano: $K(u) = \frac{1}{\sqrt{2 \pi}} e^{-\frac{u^2}{2}}$
+
+--
+
+> Existen formas de obtener o mejor valor de $h$ (por ejemplo, utilizando cross-valiation, apesar de ser computacionalmente caro). También existen reglas de bolsillo que funcionan bien en la prática. La mayoria de softwares ya calcula esto para nosotros y no nos preocuparemos con esto por ahora.
+
+
+---
+
+
+## EDA: Densidades por Kernel
+
+.panelset[
+.panel[.panel-name[Densidades 2D]
+```{r, echo = FALSE, fig.height = 5.5, fig.width= 15}
+swiss_notes %>% 
+  ggplot(aes(x = borda_sup, y = diagonal)) +
+  geom_density_2d()
+```
+]
+
+
+.panel[.panel-name[Densidades 3D]
+```{r, echo = FALSE, fig.height = 5.5, fig.width= 15}
+f <- kde3d(swiss_notes$borda_inf, swiss_notes$borda_sup, swiss_notes$diagonal, n = 15)  # número de pontos na malha
+contour3d(f$d, 
+          level = c(0.02, 0.04, 0.06), 
+          engine = "grid",
+          fill = c(FALSE, FALSE, TRUE), 
+          col.mesh = c("green", "red", "blue"))
+```
+]
+
+
+.panel[.panel-name[R Codes]
+
+```{r, eval = FALSE}
+swiss_notes %>% 
+  ggplot(aes(x = borda_sup, y = diagonal)) + geom_density_2d()
+
+f <- kde3d(swiss_notes$borda_inf, swiss_notes$borda_sup, swiss_notes$diagonal, n = 15)  
+contour3d(f$d, 
+          level = c(0.02, 0.04, 0.06), 
+          engine = "grid",
+          fill = c(FALSE, FALSE, TRUE), 
+          col.mesh = c("green", "red", "blue"))
+```
+
+]]
+
+
+
+---
+
+## EDA: Nuvem de pontos
+
+.panelset[
+.panel[.panel-name[Plot 2D]
+
+```{r, echo = FALSE, fig.height = 5.5, fig.width= 15}
+ggpairs(swiss_notes, columns = c("comprimento",
+                                 "alt_esq", 
+                                 "alt_dir",
+                                 "borda_inf",
+                                 "borda_sup",
+                                 "diagonal"),
+        upper = list(continuous = "points"),
+        lower = list(continuous = "points"),
+        mapping = aes(color = Y))
+```
+
+]
+
+.panel[.panel-name[R Code 2D]
+
+```{r, eval = FALSE}
+ggpairs(swiss_notes, columns = c("comprimento",
+                                 "alt_esq", 
+                                 "alt_dir",
+                                 "borda_inf",
+                                 "borda_sup",
+                                 "diagonal"),
+        upper = list(continuous = "points"),
+        lower = list(continuous = "points"),
+        mapping = aes(color = Y))
+```
+
+]
+
+.panel[.panel-name[Plot 3D]
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE, , fig.height = 5.5, fig.width= 10}
+plot_ly(x = swiss_notes$diagonal, 
+        y = swiss_notes$comprimento, 
+        z = swiss_notes$borda_inf, 
+        type = "scatter3d", 
+        mode = "markers", 
+        color = swiss_notes$Y)
+```
+
+]
+
+.panel[.panel-name[R Code 3D]
+
+```{r, eval = FALSE, message=FALSE, warning=FALSE}
+plot_ly(x = swiss_notes$diagonal, 
+        y = swiss_notes$comprimento, 
+        z = swiss_notes$borda_inf, 
+        type = "scatter3d", 
+        mode = "markers", 
+        color = swiss_notes$Y)
+```
+
+]]
+
+---
+
+## EDA: Nube de puntos
+
+- Son gráficos bi o tri dimensional de una variable versus otra(s).
+- Ayudan a entender la relación entre las variables en el conjunto de datos.
+- Útiles para identificar outliers o sub-grupos
+- Bastante populares y fáciles de entender.
+
+
+--
+
+**Desventajas:**
+
+- Solo es posible comparar variables 2 a 2 (o 3 a 3)
+- A medida que $p$ aumenta, secuencias de nubes de puntos son dificiles de interpretar.
+- Si tenemos várias observaciones repetidas, digamos $x = (2, 3)$, apareceram todas como un único punto sobrepuesto (existen formas de lidar con esto)
+
+
+---
+
+## EDA: Caras de Chernoff-Flury
+
+
+.panelset[
+.panel[.panel-name[Plot]
+
+```{r, echo = FALSE, fig.height = 5.5, fig.width= 12}
+faces(swiss_notes[1:25, 1:6])
+```
+
+]
+
+.panel[.panel-name[R Code]
+
+```{r, eval = FALSE}
+faces(swiss_notes[1:25, 1:6])
+```
+]]
+
+
+
+---
+
+## EDA: Caras de Chernoff-Flury
+
+- A medida que $p$ cresce, es más dificil vizualizar las observaciones en 2D o 3D.
+- Se queremos vizualizar las observaciones $p$-dimensionales en 2D, podemos utilizar procedimientos alternativos, como por exemplo, las caras de Chernoff-Flury.
+- Las caras de Chernoff-Flury ([Chernoff 1973](https://www.tandfonline.com/doi/abs/10.1080/01621459.1973.10482434) y [Flury and Riedwyl 1988](https://www.amazon.com/Multivariate-Statistics-Practical-Bernhard-Flury/dp/9401070415)) permiten representar datos multidimensionais en caras/rostros.
+- Permite identificar outliers.
+- Permite identificar sub-grupos.
+
+--
+
+**Desventajas:**
+
+- Se tenemos muchas observaciones, es bastante dificil diferenciar (o inclusive vizualizar) las caras.
+- Puede ser utilizado en dimensiones moderadas, excluyendo casos de altas dimensiones.
+
+---
+
+## EDA: Curvas de Andrews
+
+
+
+.panelset[
+.panel[.panel-name[Plot]
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE, fig.height = 5.5, fig.width= 12}
+andrews_curve <- function(x){
+  p <- ncol(x)
+  n <- nrow(x)
+  t <- seq(0, 2*pi, by = 0.01)
+  nt <- length(t)
+  z <- x
+  for (l in 1:p) {
+    z[, l] = (x[, l] - min(x[, l]))/(max(x[, l]) - min(x[, l])) 
+  }
+  
+  f <- z[,1]/sqrt(2)*matrix(1, ncol = nt, nrow = n)
+  for (i in seq(2, p, by = 2)) {
+    f <- f + z[,i]*matrix(sin((i/2)*t), ncol = nt, nrow = n, byrow = TRUE)
+    if (i + 1 <= p) {
+      f <- f  + z[, i + 1]*matrix(cos((i/2)*t), ncol = nt, nrow = n, byrow = TRUE)
+    }
+  }
+  r <- data.frame(t(f))
+  r$t <- t
+  r <- r %>% pivot_longer(cols = 1:n, names_to = "rows", values_to = "values")
+  return(r)
+}
+A <- andrews_curve(swiss_notes[,1:6])
+ggplot(A, aes(x = t, y = values, color = rows)) + 
+  geom_line() + theme(legend.position = "none")
+```
+
+]
+
+.panel[.panel-name[R Code]
+
+```{r, eval = FALSE}
+andrews_curve <- function(x){
+  p <- ncol(x); n <- nrow(x)
+  t <- seq(0, 2*pi, by = 0.01)
+  nt <- length(t)
+  z <- x
+  for (l in 1:p) { z[, l] = (x[, l] - min(x[, l]))/(max(x[, l]) - min(x[, l]))  }
+  f <- z[,1]/sqrt(2)*matrix(1, ncol = nt, nrow = n)
+  for (i in seq(2, p, by = 2)) {
+    f <- f + z[,i]*matrix(sin((i/2)*t), ncol = nt, nrow = n, byrow = TRUE)
+    if (i + 1 <= p) f <- f  + z[, i + 1]*matrix(cos((i/2)*t), ncol = nt, nrow = n, byrow = TRUE)
+  }
+  r <- data.frame(t(f))
+  r$t <- t
+  r <- r %>% pivot_longer(cols = 1:n, names_to = "rows", values_to = "values")
+  return(r)
+}
+A <- andrews_curve(swiss_notes[,1:6])
+ggplot(A, aes(x = t, y = values, color = rows)) + geom_line() + theme(legend.position = "none")
+```
+]]
+
+
+
+---
+
+## EDA: Curvas de Andrews
+
+- Permiten representar observaciones multidimensionais en curvas (en lugar de  rostros).
+- Son una alternativa a las caras de Chernoff-Flury.
+- Las curvas son calculadas de la seguinte forma: 
+
+--
+
+$$f_i(t)=
+\frac{X_{i1}}{\sqrt{2}} + X_{i2} \sin(t) + X_{i3} \cos(t) + \cdots + X_{ip} \sin(\frac{p}{2}t)$$
+
+
+--
+
+[Existen modificaciones de la función descrita anteriormente](https://rdrr.io/cran/andrews/man/andrews.html).
+
+--
+
+> **Obs:** para mejorar la vizualização, llevar las variables para una escala 0-1
+
+---
+
+## EDA: Coordenadas paralelas
+
+
+.panelset[
+.panel[.panel-name[Plot 1]
+
+```{r, echo = FALSE, fig.height = 5.5, fig.width= 15}
+ggparcoord(swiss_notes, 
+           columns = 1:6, 
+           groupColumn = "Y",
+           scale = "uniminmax")
+```
+
+]
+
+.panel[.panel-name[R Code]
+
+```{r, eval = FALSE}
+ggparcoord(swiss_notes, 
+           columns = 1:6, 
+           groupColumn = "Y",
+           scale = "uniminmax")
+```
+
+]]
+
+
+---
+
+## EDA: Coordenadas paralelas
+
+
+La idea es observar todas las variables de una vez en un plano bidimencional. Para esto, dibujamos lineas rectas en coordenadas paralelas de la seguinte forma: 
+
+--
+
+
+-  Cada variable está en un eje (tendremos tantos ejes paralelos cuanto variables disponibles).
+- Transformar las variáveis para que todas tengan $max = 1$ y $min = 0$. 
+- En la nueva escala (0-1), ubicar el valor de cada observación en cada uno de los ejes.
+- Unir los puntos con lineas rectas.
+
+--
+
+> Utilizado para detectar sub-grupos, relaciones lineales y outliers.
+
+
+
+
+---
+
+## EDA: Coordenadas paralelas
+
+
+.panelset[
+.panel[.panel-name[Rel Linear 1]
+
+```{r, echo = TRUE, fig.height = 2.5, fig.width= 8}
+ggparcoord(car_data, columns = c(8, 11), groupColumn = "procedencia", scale = "uniminmax")
+cor(car_data[, c(8, 11)])[1,2]
+```
+
+]
+
+.panel[.panel-name[Rel Linear 2]
+
+```{r, echo = TRUE, fig.height = 2.5, fig.width= 8}
+ggparcoord(car_data, columns = c(2, 8), groupColumn = "procedencia",  scale = "uniminmax")
+cor(car_data[, c(2, 8)])[1,2]
+```
+
+]
+
+
+.panel[.panel-name[Outliers]
+
+```{r, echo = TRUE, fig.height = 4, fig.width= 8}
+ggparcoord(car_data, columns = 5:7, groupColumn = "procedencia", scale = "uniminmax")
+```
+
+]]
+
+
+
+
+---
+class: inverse, right, middle
+# Análisis Exploratoria de Datos Multivariados: Estadísticas Resumen.
+---
+
+## Vector de médias
+
+
+Sea $\bar{x}_i = \dfrac{1}{n}\displaystyle \sum_{k = 1}^nx_{ki}$ la média muestral de la $i$-ésima variable.
+
+--
+
+
+El vector de médias muestrales es dado por
+$$\bar{\textbf{x}} = (\bar{x}_1, \cdots, \bar{x}_p)' = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \textbf{x}_i = \dfrac{1}{n} \textbf{x}' \textbf{1},$$ en que $\textbf{1}$ es el vector columna de tamaño $n$ con todos los elementos iguales a 1.
+
+
+
+---
+
+
+## Vector de médias
+
+
+```{r}
+swiss_notes %>% group_by(Y) %>% summarise_if(is.numeric, mean)
+```
+
+---
+
+## Matriz de covarianza y correlación
+
+Las matrices de covarianza e correlación muestral son, respectivamente, $$S = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n (\textbf{x}_i - \bar{\textbf{x}})(\textbf{x}_i - \bar{\textbf{x}})' \quad \text{e} \quad R = D^{-1/2}SD^{-1/2},$$ en que $\textbf{x}_i = (x_{i1}, \cdots, x_{ip})'$, $\bar{\textbf{x}} = (\bar{x}_1, \cdots, \bar{x}_p)'$ y $D = Diag(S)$.
+
+--
+
+Podemos mostrar que, $$S= \dfrac{1}{n} \textbf{x}' \underbrace{(\textbf{I} - \dfrac{1}{n} \textbf{1}\textbf{1}')}_{\textbf{H}} \textbf{x} = \dfrac{1}{n} \textbf{x}'\textbf{H}\textbf{x}.$$
+
+
+---
+
+## Matriz de covarianza y correlación
+
+```{r}
+swiss_notes %>% select(-Y) %>% cor() %>% round(3)
+```
+
+
+
+---
+
+## Matriz de covarianza y correlación
+
+```{r, message=FALSE, warning=FALSE, fig.height=5, fig.width=15}
+corrplot::corrplot(cor(mtcars), method = 'color', type = 'lower', diag = FALSE)
+```
+
+
+---
+
+## Otras medidas resumen
+
+- Varianza generalizada $|S|$.
+- Varianza total $Tr(S)$
+- Varianza efectiva $|S|^{1/p}$
+- Coeficiente de asimetria multivariado $A_p = \dfrac{1}{n^2} \displaystyle \sum_{i = 1}^n \sum_{j = 1}^n d_{ij}^3.$
+- Coeficiente de curtosis multivariado $K_p = \dfrac{1}{n} \displaystyle \sum_{i=1}^n d_{ii}^2.$
+
+(en que $d_{ij} = (\textbf{x}_i - \bar{\textbf{x}})'S^{-1}(\textbf{x}_j - \bar{\textbf{x}})$ es la distancia de Mahalanobis).
+
+
+
+---
+class: inverse, right, middle
+# Manos a la obra
+---
+
+## Manos a la obra
+
+### Caso 1:
+
+1. El _dataset_ **email50** contiene información sobre 50 e-mails (y si o e-mail es o no spam). [Datos disponibles aqui](https://r-data.pmagunia.com/dash)
+2. Utilize apenas las variables `spam`, `num_char`, `line_breaks`, `exclaim_mess` y realize un análisis exploratório de datos.
+
+
+### Caso 2:
+
+1. Utilize el _dataset_ **wine** [(disponible aqui)](https://archive.ics.uci.edu/ml/datasets/wine) y realize un análisis exploratório de datos.
+
+
+
+---
+
+### Referencias
+
+- [Härdle, W. K., & Simar, L. (2019). Applied Multivariate Statistical Analysis. Fifth Editon. Springer Nature.](https://link.springer.com/book/10.1007/978-3-030-26006-4) Capítulo 1
+- Koch, I. (2013). Analysis of multivariate and high-dimensional data (Vol. 32). Cambridge University Press. Capítulo 1
+- Mardia, K. V., Kent, J. T., & Bibby, J, M. (1979). Multivariate Analysis. Academic Press. Capítulo 1
+
+
+
+
+
+

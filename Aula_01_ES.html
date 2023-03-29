@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Análisis Multivariado Aplicado</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Prof. Carlos Trucíos     ctruciosm.github.io    ctrucios@unicamp.br " />
+    <script src="libs/header-attrs-2.14/header-attrs.js"></script>
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <link href="libs/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+    <link href="libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.2.6/panelset.js"></script>
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <script src="libs/fabric-4.3.1/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <script src="libs/freezeframe-5.0.2/freezeframe.min.js"></script>
+    <script src="libs/xaringanExtra-freezeframe-0.0.1/freezeframe-init.js"></script>
+    <script id="xaringanExtra-freezeframe-options" type="application/json">{"selector":"img[src$=\"gif\"]","trigger":"click","overlay":false,"responsive":true,"warnings":true}</script>
+    <link href="libs/xaringanExtra-extra-styles-0.2.6/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+    <script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+    <script src="libs/typedarray-0.1/typedarray.min.js"></script>
+    <script src="libs/jquery-3.5.1/jquery.min.js"></script>
+    <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+    <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+    <link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+    <script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Análisis Multivariado Aplicado
+]
+.subtitle[
+## Introducción
+]
+.author[
+### Prof. Carlos Trucíos <br><a href="http://ctruciosm.github.io"> <i class="fa fa-desktop fa-fw"></i>  ctruciosm.github.io</a><br> <a href="mailto:ctrucios@unicamp.br"><i class="fa fa-paper-plane fa-fw"></i>  ctrucios@unicamp.br</a><br>
+]
+.institute[
+### Instituto de Matemática, Estatística e Computação Científica, </br> Universidade Estadual de Campinas
+]
+
+---
+
+layout: true
+
+&lt;a class="footer-link" href="http://ctruciosm.github.io"&gt;ctruciosm.github.io &amp;mdash; Carlos Trucíos (IMECC/UNICAMP)&lt;/a&gt;
+
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 26px;
+    padding: 1em 3.5em 1em 3.5em;
+}
+&lt;/style&gt;
+
+
+---
+
+
+<div>
+<style type="text/css">.xaringan-extra-logo {
+width: 100px;
+height: 150px;
+z-index: 0;
+background-image: url(imagens/unicamp.png);
+background-size: contain;
+background-repeat: no-repeat;
+position: absolute;
+top:1em;right:1em;
+}
+</style>
+<script>(function () {
+  let tries = 0
+  function addLogo () {
+    if (typeof slideshow === 'undefined') {
+      tries += 1
+      if (tries < 10) {
+        setTimeout(addLogo, 100)
+      }
+    } else {
+      document.querySelectorAll('.remark-slide-content:not(.title-slide):not(.inverse):not(.hide_logo)')
+        .forEach(function (slide) {
+          const logo = document.createElement('div')
+          logo.classList = 'xaringan-extra-logo'
+          logo.href = null
+          slide.appendChild(logo)
+        })
+    }
+  }
+  document.addEventListener('DOMContentLoaded', addLogo)
+})()</script>
+</div>
+
+
+
+
+
+&lt;center&gt;
+&lt;img src="Aula_01_ES_files/figure-html/unnamed-chunk-1-1.png" width="500" height="500" /&gt;
+&lt;/center&gt;
+
+---
+
+&lt;center&gt;
+&lt;img src="Aula_01_ES_files/figure-html/unnamed-chunk-2-1.png" width="500" height="500" /&gt;
+&lt;/center&gt;
+
+---
+
+
+## Notación
+
+Sean `\(\textbf{x}_1, \cdots, \textbf{x}_n\)`  `\(n\)` observaciones `\(p\)`- dimensionales, _i.e._ `$$\textbf{x}_i = (x_{i1}, x_{i2}, \cdots, x_{ip})',$$`
+
+en que estas observaciones son realizaciones del vector aleatorio `\(p\)`-dimensional `\(\textbf{X} \in \mathbb{R}^p\)`, con `$$\textbf{X} = (X_1, X_2, \cdots, X_p)',$$` en que `\(X_1, X_2, \cdots, X_p\)` son variables aleatorias.
+
+Durante este curso, asumiremos que `\(\mathbb{E}(\textbf{X}) = \mu\)` e `\(\mathbb{V}(\textbf{X}) = \Sigma\)` son finitos.
+
+---
+
+## Notación
+
+La matriz de datos será una matriz de dimensión `\(n \times p\)` ( `\(n\)` observaciones y `\(p\)` variables) de la forma:
+
+`$$\textbf{x} = 
+  \left( {\begin{array}{cccc}
+    x_{11} &amp; x_{12} &amp; \cdots &amp; x_{1p} \\
+    x_{21} &amp; x_{22} &amp; \cdots &amp; x_{2p} \\
+    \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+    x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{np} \\
+  \end{array} } \right) = \left( {\begin{array}{c}
+    \textbf{x}_1^{\prime} \\
+    \vdots \\
+    \textbf{x}_n^{\prime} \\
+  \end{array} } \right) = (\textbf{x}_1, \cdots, \textbf{x}_n)'.$$`
+
+`\(x_{ij}\)` es el valor de la `\(j\)`-ésima columna (variable) para la `\(i\)`-ésima linea (observación).
+
+&gt; Generalmemte, esta es la forma como tenemos almacenados los datos.
+
+
+---
+
+## Definición
+
+
+&gt; .blue[**Análisis Multivariado:** conjunto de técnicas utilizadas para analisar, entender y resumir datos de dimención] `\(p \geq 2\)`. 
+
+--
+
+
+- **Reducción de dimensión:** representar el _dataset_ con un número menor de _variables_, perdiendo la menor cantidad de información posible.
+- **Agrupamiento:** agrupar observaciones o variábles segun las caracteristicas que poseen.
+- **Dependencia entre variables:** Todas las variábles son independentes? o será que una (o más) variables dependen de otras?.
+- **Predicción:** predecir los valores de una o más variables con base en los valores observados de otras variables.
+- **Clasificación:** clasificar nuevas observaciones en grupos pre-definidos con base en los valores de otras observaciones
+- **Test de hipóteses:** formulado en función de los parámetros multivariados.
+
+
+
+
+---
+class: inverse, right, middle
+# Datasets
+---
+
+### Swiss Bank Notes
+
+6 características diferentes fueron medidas en 200 billetes antiguos de 100 francos suizos. El conjunto de datos puede ser descargado [aqui](https://raw.githubusercontent.com/ctruciosm/ctruciosm.github.io/master/datasets/swiss_bank_notes.csv).
+
+--
+
+.pull-left[
+
+- `\(X_1\)`: Tamanho (horizontal),
+- `\(X_2\)`: Altura del lado derecho,
+- `\(X_3\)`: Altura del lado izquierdo,
+- `\(X_4\)`: Distancia del cuadrado interno hasta el margen inferior.
+- `\(X_5\)`: Distancia del cuadrado interno hasta el margen superior.
+- `\(X_6\)`: Tamanho de la diagonal.
+- `\(Y:\)` 1(falso) e 0(verdadero)
+]
+
+
+.pull-right[
+
+![pensativo](imagens/1000_swiss_francs.png)
+
+]
+
+
+---
+
+### Swiss Bank Notes
+
+
+```r
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(GGally)
+library(plotly)
+library(aplpack)
+library(misc3d)
+```
+
+--
+
+
+```r
+swiss_notes &lt;- read.csv("./datasets/swiss_bank_notes.csv") 
+head(swiss_notes)
+```
+
+```
+##      X1    X2    X3   X4   X5    X6 Y
+## 1 214.8 131.0 131.1  9.0  9.7 141.0 0
+## 2 214.6 129.7 129.7  8.1  9.5 141.7 0
+## 3 214.8 129.7 129.7  8.7  9.6 142.2 0
+## 4 214.8 129.7 129.6  7.5 10.4 142.0 0
+## 5 215.0 129.6 129.7 10.4  7.7 141.8 0
+## 6 215.7 130.8 130.5  9.0 10.1 141.4 0
+```
+
+---
+
+### Dataset: Swiss Bank Notes
+
+
+```r
+swiss_notes &lt;-  swiss_notes %&gt;% 
+  rename("comprimento" = "X1", 
+         "alt_esq" = "X2", 
+         "alt_dir" = "X3",
+         "borda_inf" = "X4", 
+         "borda_sup" = "X5", 
+         "diagonal" = "X6") %&gt;% 
+  mutate(Y = recode(Y, "0" = "Original", "1" = "Falso")) %&gt;% 
+  mutate(Y = factor(Y))
+glimpse(swiss_notes)
+```
+
+```
+## Rows: 200
+## Columns: 7
+## $ comprimento &lt;dbl&gt; 214.8, 214.6, 214.8, 214.8, 215.0, 215.7, 215.5, 214.5, 21…
+## $ alt_esq     &lt;dbl&gt; 131.0, 129.7, 129.7, 129.7, 129.6, 130.8, 129.5, 129.6, 12…
+## $ alt_dir     &lt;dbl&gt; 131.1, 129.7, 129.7, 129.6, 129.7, 130.5, 129.7, 129.2, 12…
+## $ borda_inf   &lt;dbl&gt; 9.0, 8.1, 8.7, 7.5, 10.4, 9.0, 7.9, 7.2, 8.2, 9.2, 7.9, 7.…
+## $ borda_sup   &lt;dbl&gt; 9.7, 9.5, 9.6, 10.4, 7.7, 10.1, 9.6, 10.7, 11.0, 10.0, 11.…
+## $ diagonal    &lt;dbl&gt; 141.0, 141.7, 142.2, 142.0, 141.8, 141.4, 141.6, 141.7, 14…
+## $ Y           &lt;fct&gt; Original, Original, Original, Original, Original, Original…
+```
+
+
+
+
+
+
+
+---
+class: inverse, right, middle
+# Análisis Exploratoria de Datos Multivariados
+---
+
+## Análisis Exploratoria de Datos Multivariados
+
+.blue[Antes de intentar construir algun modelo, primero necesitamos realizar un Análisis Exploratorio de Datos (EDA).]
+
+--
+
+**Que podemos esperar del EDA?**
+
+--
+
+- Son algunas variables mas dispersas que otras?
+- Los datos indican la existencia de sub-grupos?
+- Tenemos outliers?
+- Normalidad?
+- Las variables están correlacionadas? Cuanto?
+- etc.
+
+
+---
+
+
+## Análisis Exploratoria de Datos Multivariados
+
+**Cuales estadísticas, tablas o gráficos serian interesantes?**
+
+--
+
+- Vector de médias
+- Matriz de covarianza/correlación
+- 2D/3D Scatterplots
+- Boxplot
+- Caras de Chernoff-Flury
+- Curvas de Andrews
+- Coordenadas Paralelas
+- Histogramas
+- Gráfico de densidad (Kernel)
+- etc,
+
+
+---
+class: inverse, right, middle
+# Análisis Exploratoria de Datos Multivariados Métodos Gráficos.
+---
+
+
+## EDA: Boxplot
+
+
+.panelset[
+.panel[.panel-name[Plot]
+
+![](Aula_01_ES_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
+]
+
+.panel[.panel-name[R Code]
+
+
+```r
+swiss_notes_longer &lt;- swiss_notes %&gt;%
+  pivot_longer(cols = c("comprimento", 
+                        "alt_esq", 
+                        "alt_dir", 
+                        "borda_inf",
+                        "borda_sup", 
+                        "diagonal"),
+               names_to = "variaveis", 
+               values_to = "valores") 
+
+swiss_notes_longer %&gt;% ggplot() + 
+  geom_boxplot(aes(y = valores,  x = Y, fill = Y)) +
+  facet_wrap(.~ variaveis, scales = "free_y")
+```
+
+]]
+
+
+---
+
+## EDA: Boxplot
+
+**Ventajas:**
+
+- Útil para ver locación (mediana),
+- Útil para ver asimetría (posición de la mediana en la caja), 
+- Útil para ver dispersión (tamaño de la caja) e
+- Útil para ver puntos discordantes.
+- **Bastante útil para comparar grupos.**
+
+--
+
+
+**Desventajas:**
+
+- Nos permite comparar apenas una única variable al mismo tiempo.
+- No nos permite vizualizar multimodalidad.
+- No nos permite vizualizar subgrupos (clusters).
+
+--
+
+&gt; Algunas posibles alternativas son [violin plots](https://chartio.com/learn/charts/violin-plot-complete-guide/) ou [bean plots](https://www.jstatsoft.org/article/view/v028c01).
+
+
+
+---
+
+## EDA: Densidad por Kernel
+
+
+
+.panelset[
+.panel[.panel-name[Plot]
+
+![](Aula_01_ES_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+
+]
+
+.panel[.panel-name[R Code]
+
+
+```r
+swiss_notes_longer %&gt;% ggplot() + geom_density(aes(x = valores,  color = Y)) +
+  facet_wrap(.~ variaveis, scales = "free")
+```
+
+]
+
+.panel[.panel-name[Plot 2]
+
+![](Aula_01_ES_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+]]
+
+
+---
+
+## EDA: Densidad por Kernel
+
+- Nos dan una idea de la distribución de los datos.
+- Permite observar asimetria, dispersión y posibles multimodalidades
+- Utiliza una función suavizada en lugar de apenas una "caja" (como en los histogramas).
+
+
+--
+
+La forma general del estimador Kernel esta dada por:
+
+`$$\hat{f}_h (x) = \dfrac{1}{n\times h} \displaystyle \sum_{i = 1}^n K\Big(\dfrac{x-x_i}{h} \Big).$$` 
+
+--
+
+&gt; Diferentes Kernels ( `\(K(\cdot)\)` ) produciran diferentes formas de la densidad estimada. 
+
+Note que necesitamos de un valor para `\(h\)`.
+
+
+---
+
+## EDA: Densidad por Kernel
+
+
+Algunos de los Kernels más utilizados son:
+
+- Uniforme: `\(K(u) = \frac{1}{2}I(|u| \leq 1)\)`,
+- Triangular: `\(K(u) = (1 - |u|) I(|u| \leq 1)\)`
+- Epanechnikov: `\(K(u) = \frac{3}{4} (1 - u^2) I(|u| \leq 1)\)`,
+- Biweight: `\(K(u) = \frac{15}{16} (1 - u^2)^2 I(|u| \leq 1)\)`,
+- Gaussiano: `\(K(u) = \frac{1}{\sqrt{2 \pi}} e^{-\frac{u^2}{2}}\)`
+
+--
+
+&gt; Existen formas de obtener o mejor valor de `\(h\)` (por ejemplo, utilizando cross-valiation, apesar de ser computacionalmente caro). También existen reglas de bolsillo que funcionan bien en la prática. La mayoria de softwares ya calcula esto para nosotros y no nos preocuparemos con esto por ahora.
+
+
+---
+
+
+## EDA: Densidades por Kernel
+
+.panelset[
+.panel[.panel-name[Densidades 2D]
+![](Aula_01_ES_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+]
+
+
+.panel[.panel-name[Densidades 3D]
+![](Aula_01_ES_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+]
+
+
+.panel[.panel-name[R Codes]
+
+
+```r
+swiss_notes %&gt;% 
+  ggplot(aes(x = borda_sup, y = diagonal)) + geom_density_2d()
+
+f &lt;- kde3d(swiss_notes$borda_inf, swiss_notes$borda_sup, swiss_notes$diagonal, n = 15)  
+contour3d(f$d, 
+          level = c(0.02, 0.04, 0.06), 
+          engine = "grid",
+          fill = c(FALSE, FALSE, TRUE), 
+          col.mesh = c("green", "red", "blue"))
+```
+
+]]
+
+
+
+---
+
+## EDA: Nuvem de pontos
+
+.panelset[
+.panel[.panel-name[Plot 2D]
+
+![](Aula_01_ES_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+
+]
+
+.panel[.panel-name[R Code 2D]
+
+
+```r
+ggpairs(swiss_notes, columns = c("comprimento",
+                                 "alt_esq", 
+                                 "alt_dir",
+                                 "borda_inf",
+                                 "borda_sup",
+                                 "diagonal"),
+        upper = list(continuous = "points"),
+        lower = list(continuous = "points"),
+        mapping = aes(color = Y))
+```
+
+]
+
+.panel[.panel-name[Plot 3D]
+
+<div id="htmlwidget-50a71c73b2625819f31d" style="width:720px;height:396px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-50a71c73b2625819f31d">{"x":{"visdat":{"28e652efc242":["function () ","plotlyVisDat"]},"cur_data":"28e652efc242","attrs":{"28e652efc242":{"x":[141,141.7,142.2,142,141.8,141.4,141.6,141.7,141.9,140.7,141.8,142.2,141.4,141.7,141.8,141.6,141.7,141.9,141.5,141.9,141.4,141.6,141.5,141.6,141.1,142.3,142.4,141.9,141.8,142,141.8,142.3,140.7,141,141.4,141.8,141.8,142,142.1,141.3,142.3,140.9,141.7,140.9,141,141.8,141.5,142,141.1,142,141.3,141.1,140.9,141.6,141.4,142,141.2,141.1,141.3,141.4,141.6,141.5,141.5,141.4,141.5,140.8,141.3,141.5,141.8,139.6,140.9,141.4,141.2,141.8,142.1,141.7,141.2,141,140.9,141.8,140.6,141,141.9,141.3,141.2,141.5,141.6,142.1,141.5,142,141.6,141.4,141.5,141.5,142,141.7,141.1,141.2,141.5,141.2,139.8,139.5,140.2,140.3,139.7,139.9,140.2,139.9,139.4,140.3,139.2,140.1,140.6,139.9,139.7,139.2,139.8,139.9,140,139.2,139.6,139.6,140.2,139.7,140.1,139.6,140.2,140,140.3,139.9,139.8,139.2,139.9,139.7,139.5,139.5,139.4,138.3,139.8,139.6,139.3,139.2,139.9,139.9,139.3,139.8,139.9,138.1,139.4,139.4,139.8,139,139.3,139.4,139.5,139.7,139.5,139.2,139.3,137.9,138.4,138.1,139.5,139.1,139.8,139.7,138.8,138.6,139.6,139.7,137.8,139.6,139.4,139.2,139.6,139,139.7,139.6,139.1,137.8,139.1,138.7,139.3,139.3,139.5,139.4,138.5,139.2,139.4,139.2,139.4,138.6,139.2,138.5,139.8,139.6,139.7,140,139.4,139.6],"y":[214.8,214.6,214.8,214.8,215,215.7,215.5,214.5,214.9,215.2,215.3,215.1,215.2,214.7,215.1,214.5,214.6,215,215.2,214.7,215,215.6,215.3,215.7,215.1,215.3,215.5,215.1,215.1,214.8,215.2,214.8,215,215.6,215.9,214.6,215.5,215.3,215.3,213.9,214.4,214.8,214.9,214.9,214.8,214.3,214.8,214.8,214.6,214.5,214.6,215.3,214.5,215.4,214.5,215.2,215.7,215,215.1,215.1,215.1,215.3,215.4,214.5,215,215.2,214.6,214.8,215.1,214.9,213.8,215.2,215,214.4,215.2,214.1,214.9,214.6,215.2,214.6,215.1,214.9,215.2,215.2,215.4,215.1,215.2,215,214.9,215,214.7,215.4,214.9,214.5,214.7,215.6,215,214.4,215.1,214.7,214.4,214.9,214.9,215,214.7,215,215.3,214.8,215,215.2,215.2,215.1,215.4,214.9,215.1,215.5,214.7,214.7,214.8,214.4,214.8,215.1,215.3,215.1,214.7,214.9,215,215.5,215.1,214.5,214.3,214.5,214.9,214.6,214.2,214.8,214.6,214.9,214.6,214.5,214.8,214.7,214.6,215,214.5,214.9,215,215.3,214.7,214.9,214.9,214.6,214.6,214.5,214.5,215.1,214.2,214.4,214.8,214.6,215.6,214.9,214.6,214.7,214.3,215.1,216.3,215.6,214.8,214.9,213.9,214.2,214.8,214.8,214.8,214.9,214.3,214.5,214.8,214.5,215,214.8,215,214.6,214.7,214.7,214.5,214.8,214.8,214.6,215.1,215.4,214.7,215,214.9,215,215.1,214.8,214.7,214.3],"z":[9,8.1,8.7,7.5,10.4,9,7.9,7.2,8.2,9.2,7.9,7.7,7.9,7.7,7.7,9.3,8.2,9,7.4,8.6,8.4,8.1,8.4,8.7,7.4,8,8.9,9.8,7.4,8.3,7.9,8.6,7.7,8.4,8.9,9.4,8.4,7.9,8.5,8.1,8.9,8.8,9.3,9,8.2,8.3,8.3,7.3,7.9,7.8,7.2,9.5,7.8,7.6,7.9,9.2,9.2,8.8,7.9,8.2,8.3,7.5,8,8,8.6,8.8,7.7,9.1,8.6,8,8.4,8.2,8.7,7.5,7.2,7.6,8.8,7.4,7.9,7.9,8.6,7.5,9,7.9,9,8.9,8.7,8.4,7.4,8,8.6,8.5,8.2,7.4,8.3,9,9.1,8,9.1,7.8,9.7,11,8.7,9.9,11.8,10.6,9.3,9.8,10,10.4,8,10.6,9.7,11.4,10.6,8.2,11.8,12.1,11,10.1,10.1,12.3,11.6,10.5,9.9,10.2,9.4,10.2,10.1,9.8,10.7,12.3,10.6,10.5,11,11.9,10.7,9.3,11.3,11.8,10,10.2,11.2,10.6,11.4,11.9,11.4,9.3,10.7,9.9,11.9,11.9,10.4,12.1,11,11.6,10.3,11.3,12.5,8.1,7.4,9.9,11.5,11.6,11.4,10.3,10,9.6,9.6,11.4,8.7,12,11.8,10.4,11.4,11.9,11.6,9.9,10.2,8.2,11.4,8,11,10.1,10.7,11.5,8,11.4,9.6,12.7,10.2,8.8,10.8,9.6,11.6,9.9,10.3,10.6,11.2,10.2],"mode":"markers","color":["Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Original","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso","Falso"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":[]},"yaxis":{"title":[]},"zaxis":{"title":[]}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[139.8,139.5,140.2,140.3,139.7,139.9,140.2,139.9,139.4,140.3,139.2,140.1,140.6,139.9,139.7,139.2,139.8,139.9,140,139.2,139.6,139.6,140.2,139.7,140.1,139.6,140.2,140,140.3,139.9,139.8,139.2,139.9,139.7,139.5,139.5,139.4,138.3,139.8,139.6,139.3,139.2,139.9,139.9,139.3,139.8,139.9,138.1,139.4,139.4,139.8,139,139.3,139.4,139.5,139.7,139.5,139.2,139.3,137.9,138.4,138.1,139.5,139.1,139.8,139.7,138.8,138.6,139.6,139.7,137.8,139.6,139.4,139.2,139.6,139,139.7,139.6,139.1,137.8,139.1,138.7,139.3,139.3,139.5,139.4,138.5,139.2,139.4,139.2,139.4,138.6,139.2,138.5,139.8,139.6,139.7,140,139.4,139.6],"y":[214.4,214.9,214.9,215,214.7,215,215.3,214.8,215,215.2,215.2,215.1,215.4,214.9,215.1,215.5,214.7,214.7,214.8,214.4,214.8,215.1,215.3,215.1,214.7,214.9,215,215.5,215.1,214.5,214.3,214.5,214.9,214.6,214.2,214.8,214.6,214.9,214.6,214.5,214.8,214.7,214.6,215,214.5,214.9,215,215.3,214.7,214.9,214.9,214.6,214.6,214.5,214.5,215.1,214.2,214.4,214.8,214.6,215.6,214.9,214.6,214.7,214.3,215.1,216.3,215.6,214.8,214.9,213.9,214.2,214.8,214.8,214.8,214.9,214.3,214.5,214.8,214.5,215,214.8,215,214.6,214.7,214.7,214.5,214.8,214.8,214.6,215.1,215.4,214.7,215,214.9,215,215.1,214.8,214.7,214.3],"z":[9.7,11,8.7,9.9,11.8,10.6,9.3,9.8,10,10.4,8,10.6,9.7,11.4,10.6,8.2,11.8,12.1,11,10.1,10.1,12.3,11.6,10.5,9.9,10.2,9.4,10.2,10.1,9.8,10.7,12.3,10.6,10.5,11,11.9,10.7,9.3,11.3,11.8,10,10.2,11.2,10.6,11.4,11.9,11.4,9.3,10.7,9.9,11.9,11.9,10.4,12.1,11,11.6,10.3,11.3,12.5,8.1,7.4,9.9,11.5,11.6,11.4,10.3,10,9.6,9.6,11.4,8.7,12,11.8,10.4,11.4,11.9,11.6,9.9,10.2,8.2,11.4,8,11,10.1,10.7,11.5,8,11.4,9.6,12.7,10.2,8.8,10.8,9.6,11.6,9.9,10.3,10.6,11.2,10.2],"mode":"markers","type":"scatter3d","name":"Falso","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"line":{"color":"rgba(102,194,165,1)"},"frame":null},{"x":[141,141.7,142.2,142,141.8,141.4,141.6,141.7,141.9,140.7,141.8,142.2,141.4,141.7,141.8,141.6,141.7,141.9,141.5,141.9,141.4,141.6,141.5,141.6,141.1,142.3,142.4,141.9,141.8,142,141.8,142.3,140.7,141,141.4,141.8,141.8,142,142.1,141.3,142.3,140.9,141.7,140.9,141,141.8,141.5,142,141.1,142,141.3,141.1,140.9,141.6,141.4,142,141.2,141.1,141.3,141.4,141.6,141.5,141.5,141.4,141.5,140.8,141.3,141.5,141.8,139.6,140.9,141.4,141.2,141.8,142.1,141.7,141.2,141,140.9,141.8,140.6,141,141.9,141.3,141.2,141.5,141.6,142.1,141.5,142,141.6,141.4,141.5,141.5,142,141.7,141.1,141.2,141.5,141.2],"y":[214.8,214.6,214.8,214.8,215,215.7,215.5,214.5,214.9,215.2,215.3,215.1,215.2,214.7,215.1,214.5,214.6,215,215.2,214.7,215,215.6,215.3,215.7,215.1,215.3,215.5,215.1,215.1,214.8,215.2,214.8,215,215.6,215.9,214.6,215.5,215.3,215.3,213.9,214.4,214.8,214.9,214.9,214.8,214.3,214.8,214.8,214.6,214.5,214.6,215.3,214.5,215.4,214.5,215.2,215.7,215,215.1,215.1,215.1,215.3,215.4,214.5,215,215.2,214.6,214.8,215.1,214.9,213.8,215.2,215,214.4,215.2,214.1,214.9,214.6,215.2,214.6,215.1,214.9,215.2,215.2,215.4,215.1,215.2,215,214.9,215,214.7,215.4,214.9,214.5,214.7,215.6,215,214.4,215.1,214.7],"z":[9,8.1,8.7,7.5,10.4,9,7.9,7.2,8.2,9.2,7.9,7.7,7.9,7.7,7.7,9.3,8.2,9,7.4,8.6,8.4,8.1,8.4,8.7,7.4,8,8.9,9.8,7.4,8.3,7.9,8.6,7.7,8.4,8.9,9.4,8.4,7.9,8.5,8.1,8.9,8.8,9.3,9,8.2,8.3,8.3,7.3,7.9,7.8,7.2,9.5,7.8,7.6,7.9,9.2,9.2,8.8,7.9,8.2,8.3,7.5,8,8,8.6,8.8,7.7,9.1,8.6,8,8.4,8.2,8.7,7.5,7.2,7.6,8.8,7.4,7.9,7.9,8.6,7.5,9,7.9,9,8.9,8.7,8.4,7.4,8,8.6,8.5,8.2,7.4,8.3,9,9.1,8,9.1,7.8],"mode":"markers","type":"scatter3d","name":"Original","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"line":{"color":"rgba(141,160,203,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+
+]
+
+.panel[.panel-name[R Code 3D]
+
+
+```r
+plot_ly(x = swiss_notes$diagonal, 
+        y = swiss_notes$comprimento, 
+        z = swiss_notes$borda_inf, 
+        type = "scatter3d", 
+        mode = "markers", 
+        color = swiss_notes$Y)
+```
+
+]]
+
+---
+
+## EDA: Nube de puntos
+
+- Son gráficos bi o tri dimensional de una variable versus otra(s).
+- Ayudan a entender la relación entre las variables en el conjunto de datos.
+- Útiles para identificar outliers o sub-grupos
+- Bastante populares y fáciles de entender.
+
+
+--
+
+**Desventajas:**
+
+- Solo es posible comparar variables 2 a 2 (o 3 a 3)
+- A medida que `\(p\)` aumenta, secuencias de nubes de puntos son dificiles de interpretar.
+- Si tenemos várias observaciones repetidas, digamos `\(x = (2, 3)\)`, apareceram todas como un único punto sobrepuesto (existen formas de lidar con esto)
+
+
+---
+
+## EDA: Caras de Chernoff-Flury
+
+
+.panelset[
+.panel[.panel-name[Plot]
+
+![](Aula_01_ES_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+
+```
+## effect of variables:
+##  modified item       Var          
+##  "height of face   " "comprimento"
+##  "width of face    " "alt_esq"    
+##  "structure of face" "alt_dir"    
+##  "height of mouth  " "borda_inf"  
+##  "width of mouth   " "borda_sup"  
+##  "smiling          " "diagonal"   
+##  "height of eyes   " "comprimento"
+##  "width of eyes    " "alt_esq"    
+##  "height of hair   " "alt_dir"    
+##  "width of hair   "  "borda_inf"  
+##  "style of hair   "  "borda_sup"  
+##  "height of nose  "  "diagonal"   
+##  "width of nose   "  "comprimento"
+##  "width of ear    "  "alt_esq"    
+##  "height of ear   "  "alt_dir"
+```
+
+]
+
+.panel[.panel-name[R Code]
+
+
+```r
+faces(swiss_notes[1:25, 1:6])
+```
+]]
+
+
+
+---
+
+## EDA: Caras de Chernoff-Flury
+
+- A medida que `\(p\)` cresce, es más dificil vizualizar las observaciones en 2D o 3D.
+- Se queremos vizualizar las observaciones `\(p\)`-dimensionales en 2D, podemos utilizar procedimientos alternativos, como por exemplo, las caras de Chernoff-Flury.
+- Las caras de Chernoff-Flury ([Chernoff 1973](https://www.tandfonline.com/doi/abs/10.1080/01621459.1973.10482434) y [Flury and Riedwyl 1988](https://www.amazon.com/Multivariate-Statistics-Practical-Bernhard-Flury/dp/9401070415)) permiten representar datos multidimensionais en caras/rostros.
+- Permite identificar outliers.
+- Permite identificar sub-grupos.
+
+--
+
+**Desventajas:**
+
+- Se tenemos muchas observaciones, es bastante dificil diferenciar (o inclusive vizualizar) las caras.
+- Puede ser utilizado en dimensiones moderadas, excluyendo casos de altas dimensiones.
+
+---
+
+## EDA: Curvas de Andrews
+
+
+
+.panelset[
+.panel[.panel-name[Plot]
+
+![](Aula_01_ES_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+
+]
+
+.panel[.panel-name[R Code]
+
+
+```r
+andrews_curve &lt;- function(x){
+  p &lt;- ncol(x); n &lt;- nrow(x)
+  t &lt;- seq(0, 2*pi, by = 0.01)
+  nt &lt;- length(t)
+  z &lt;- x
+  for (l in 1:p) { z[, l] = (x[, l] - min(x[, l]))/(max(x[, l]) - min(x[, l]))  }
+  f &lt;- z[,1]/sqrt(2)*matrix(1, ncol = nt, nrow = n)
+  for (i in seq(2, p, by = 2)) {
+    f &lt;- f + z[,i]*matrix(sin((i/2)*t), ncol = nt, nrow = n, byrow = TRUE)
+    if (i + 1 &lt;= p) f &lt;- f  + z[, i + 1]*matrix(cos((i/2)*t), ncol = nt, nrow = n, byrow = TRUE)
+  }
+  r &lt;- data.frame(t(f))
+  r$t &lt;- t
+  r &lt;- r %&gt;% pivot_longer(cols = 1:n, names_to = "rows", values_to = "values")
+  return(r)
+}
+A &lt;- andrews_curve(swiss_notes[,1:6])
+ggplot(A, aes(x = t, y = values, color = rows)) + geom_line() + theme(legend.position = "none")
+```
+]]
+
+
+
+---
+
+## EDA: Curvas de Andrews
+
+- Permiten representar observaciones multidimensionais en curvas (en lugar de  rostros).
+- Son una alternativa a las caras de Chernoff-Flury.
+- Las curvas son calculadas de la seguinte forma: 
+
+--
+
+`$$f_i(t)=
+\frac{X_{i1}}{\sqrt{2}} + X_{i2} \sin(t) + X_{i3} \cos(t) + \cdots + X_{ip} \sin(\frac{p}{2}t)$$`
+
+
+--
+
+[Existen modificaciones de la función descrita anteriormente](https://rdrr.io/cran/andrews/man/andrews.html).
+
+--
+
+&gt; **Obs:** para mejorar la vizualização, llevar las variables para una escala 0-1
+
+---
+
+## EDA: Coordenadas paralelas
+
+
+.panelset[
+.panel[.panel-name[Plot 1]
+
+![](Aula_01_ES_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
+
+]
+
+.panel[.panel-name[R Code]
+
+
+```r
+ggparcoord(swiss_notes, 
+           columns = 1:6, 
+           groupColumn = "Y",
+           scale = "uniminmax")
+```
+
+]]
+
+
+---
+
+## EDA: Coordenadas paralelas
+
+
+La idea es observar todas las variables de una vez en un plano bidimencional. Para esto, dibujamos lineas rectas en coordenadas paralelas de la seguinte forma: 
+
+--
+
+
+-  Cada variable está en un eje (tendremos tantos ejes paralelos cuanto variables disponibles).
+- Transformar las variáveis para que todas tengan `\(max = 1\)` y `\(min = 0\)`. 
+- En la nueva escala (0-1), ubicar el valor de cada observación en cada uno de los ejes.
+- Unir los puntos con lineas rectas.
+
+--
+
+&gt; Utilizado para detectar sub-grupos, relaciones lineales y outliers.
+
+
+
+
+---
+
+## EDA: Coordenadas paralelas
+
+
+.panelset[
+.panel[.panel-name[Rel Linear 1]
+
+
+```r
+ggparcoord(car_data, columns = c(8, 11), groupColumn = "procedencia", scale = "uniminmax")
+```
+
+![](Aula_01_ES_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
+
+```r
+cor(car_data[, c(8, 11)])[1,2]
+```
+
+```
+## [1] 0.9006063
+```
+
+]
+
+.panel[.panel-name[Rel Linear 2]
+
+
+```r
+ggparcoord(car_data, columns = c(2, 8), groupColumn = "procedencia",  scale = "uniminmax")
+```
+
+![](Aula_01_ES_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
+
+```r
+cor(car_data[, c(2, 8)])[1,2]
+```
+
+```
+## [1] -0.8228964
+```
+
+]
+
+
+.panel[.panel-name[Outliers]
+
+
+```r
+ggparcoord(car_data, columns = 5:7, groupColumn = "procedencia", scale = "uniminmax")
+```
+
+![](Aula_01_ES_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
+
+]]
+
+
+
+
+---
+class: inverse, right, middle
+# Análisis Exploratoria de Datos Multivariados: Estadísticas Resumen.
+---
+
+## Vector de médias
+
+
+Sea `\(\bar{x}_i = \dfrac{1}{n}\displaystyle \sum_{k = 1}^nx_{ki}\)` la média muestral de la `\(i\)`-ésima variable.
+
+--
+
+
+El vector de médias muestrales es dado por
+`$$\bar{\textbf{x}} = (\bar{x}_1, \cdots, \bar{x}_p)' = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \textbf{x}_i = \dfrac{1}{n} \textbf{x}' \textbf{1},$$` en que `\(\textbf{1}\)` es el vector columna de tamaño `\(n\)` con todos los elementos iguales a 1.
+
+
+
+---
+
+
+## Vector de médias
+
+
+
+```r
+swiss_notes %&gt;% group_by(Y) %&gt;% summarise_if(is.numeric, mean)
+```
+
+```
+## # A tibble: 2 × 7
+##   Y        comprimento alt_esq alt_dir borda_inf borda_sup diagonal
+##   &lt;fct&gt;          &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Falso           215.    130.    130.     10.5       11.1     139.
+## 2 Original        215.    130.    130.      8.30      10.2     142.
+```
+
+---
+
+## Matriz de covarianza y correlación
+
+Las matrices de covarianza e correlación muestral son, respectivamente, `$$S = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n (\textbf{x}_i - \bar{\textbf{x}})(\textbf{x}_i - \bar{\textbf{x}})' \quad \text{e} \quad R = D^{-1/2}SD^{-1/2},$$` en que `\(\textbf{x}_i = (x_{i1}, \cdots, x_{ip})'\)`, `\(\bar{\textbf{x}} = (\bar{x}_1, \cdots, \bar{x}_p)'\)` y `\(D = Diag(S)\)`.
+
+--
+
+Podemos mostrar que, `$$S= \dfrac{1}{n} \textbf{x}' \underbrace{(\textbf{I} - \dfrac{1}{n} \textbf{1}\textbf{1}')}_{\textbf{H}} \textbf{x} = \dfrac{1}{n} \textbf{x}'\textbf{H}\textbf{x}.$$`
+
+
+---
+
+## Matriz de covarianza y correlación
+
+
+```r
+swiss_notes %&gt;% select(-Y) %&gt;% cor() %&gt;% round(3)
+```
+
+```
+##             comprimento alt_esq alt_dir borda_inf borda_sup diagonal
+## comprimento       1.000   0.231   0.152    -0.190    -0.061    0.194
+## alt_esq           0.231   1.000   0.743     0.414     0.362   -0.503
+## alt_dir           0.152   0.743   1.000     0.487     0.401   -0.516
+## borda_inf        -0.190   0.414   0.487     1.000     0.142   -0.623
+## borda_sup        -0.061   0.362   0.401     0.142     1.000   -0.594
+## diagonal          0.194  -0.503  -0.516    -0.623    -0.594    1.000
+```
+
+
+
+---
+
+## Matriz de covarianza y correlación
+
+
+```r
+corrplot::corrplot(cor(mtcars), method = 'color', type = 'lower', diag = FALSE)
+```
+
+![](Aula_01_ES_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
+
+
+---
+
+## Otras medidas resumen
+
+- Varianza generalizada `\(|S|\)`.
+- Varianza total `\(Tr(S)\)`
+- Varianza efectiva `\(|S|^{1/p}\)`
+- Coeficiente de asimetria multivariado `\(A_p = \dfrac{1}{n^2} \displaystyle \sum_{i = 1}^n \sum_{j = 1}^n d_{ij}^3.\)`
+- Coeficiente de curtosis multivariado `\(K_p = \dfrac{1}{n} \displaystyle \sum_{i=1}^n d_{ii}^2.\)`
+
+(en que `\(d_{ij} = (\textbf{x}_i - \bar{\textbf{x}})'S^{-1}(\textbf{x}_j - \bar{\textbf{x}})\)` es la distancia de Mahalanobis).
+
+
+
+---
+class: inverse, right, middle
+# Manos a la obra
+---
+
+## Manos a la obra
+
+### Caso 1:
+
+1. El _dataset_ **email50** contiene información sobre 50 e-mails (y si o e-mail es o no spam). [Datos disponibles aqui](https://r-data.pmagunia.com/dash)
+2. Utilize apenas las variables `spam`, `num_char`, `line_breaks`, `exclaim_mess` y realize un análisis exploratório de datos.
+
+
+### Caso 2:
+
+1. Utilize el _dataset_ **wine** [(disponible aqui)](https://archive.ics.uci.edu/ml/datasets/wine) y realize un análisis exploratório de datos.
+
+
+
+---
+
+### Referencias
+
+- [Härdle, W. K., &amp; Simar, L. (2019). Applied Multivariate Statistical Analysis. Fifth Editon. Springer Nature.](https://link.springer.com/book/10.1007/978-3-030-26006-4) Capítulo 1
+- Koch, I. (2013). Analysis of multivariate and high-dimensional data (Vol. 32). Cambridge University Press. Capítulo 1
+- Mardia, K. V., Kent, J. T., &amp; Bibby, J, M. (1979). Multivariate Analysis. Academic Press. Capítulo 1
+
+
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
